@@ -1,5 +1,16 @@
 import React, {Fragment} from 'react';
-import {Grid, Paper, Typography, List, ListItem, ListItemText} from "@material-ui/core";
+import {
+    Grid,
+    Paper,
+    Typography,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemSecondaryAction,
+    IconButton
+} from "@material-ui/core";
+import {Delete, Edit} from '@material-ui/icons'
+import Form from "./Form";
 
 // const styles = makeStyles()
 
@@ -7,25 +18,30 @@ const styles = {
     Paper: {
         padding: 20,
         marginTop: 10,
-        marginBottom: 10,
         height: 500,
         overflowY: 'auto'
     }
 };
 
 const Index = ({
+                   muscles,
                    exercises,
                    category,
+                   editMode,
+                   exercise,
                    exercise: {
                        id,
                        title = ' Welcome!',
                        description = 'Please select an exercise from the list on the left',
                    },
-                   onSelect
+                   onSelect,
+                   onDelete,
+                   onEditSelect,
+                   onEdit
                }) => {
     return (
         <Grid container>
-            <Grid item sm>
+            <Grid item xs={12} sm={6}>
                 <Paper style={styles.Paper}>
                     {exercises.map(([group, exercises]) =>
                         !category || category === group ?
@@ -46,6 +62,18 @@ const Index = ({
                                             <ListItemText
                                                 primary={title}
                                             />
+                                            <ListItemSecondaryAction>
+                                                <IconButton
+                                                    onClick={() => onEditSelect(id)}
+                                                >
+                                                    <Edit/>
+                                                </IconButton>
+                                                <IconButton
+                                                    onClick={() => onDelete(id)}
+                                                >
+                                                    <Delete/>
+                                                </IconButton>
+                                            </ListItemSecondaryAction>
                                         </ListItem>
                                     )}
                                 </List>
@@ -53,14 +81,24 @@ const Index = ({
                     )}
                 </Paper>
             </Grid>
-            <Grid item sm>
+            <Grid item xs={12} sm={6}>
                 <Paper style={styles.Paper}>
-                    <Typography variant="h4">
-                        {title}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                        {description}
-                    </Typography>
+                    {editMode ?
+                        <Form
+                            exercise={exercise}
+                            muscles={muscles}
+                            onSubmit={onEdit}
+                        />
+                        : <>
+                            <Typography variant="h4">
+                                {title}
+                            </Typography>
+                            <Typography variant="subtitle1">
+                                {description}
+                            </Typography>
+                        </>
+                    }
+
                 </Paper>
             </Grid>
         </Grid>

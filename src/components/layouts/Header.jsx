@@ -1,6 +1,6 @@
 import React from 'react';
 import {AppBar, Typography, Toolbar} from "@material-ui/core";
-import CreateDialog from '../Exercises/Dialog/Create'
+import CreateDialog from '../Exercises/Dialog'
 
 const Header = ({muscles, onExerciseCreate}) => {
     return (
