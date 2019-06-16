@@ -7,14 +7,7 @@ import {
     Select,
     TextField
 } from "@material-ui/core";
-import {withStyles} from '@material-ui/core/styles';
 
-
-const styles = theme => ({
-    formControl: {
-        width: 270,
-    },
-});
 
 class Form extends Component {
 
@@ -28,6 +21,12 @@ class Form extends Component {
             muscles: ''
         }
     }
+
+    // componentWillReceiveProps({exercise} ) {
+    // this.setState({
+    //     ...exercise
+    // })
+    // }
 
     // static getDerivedStateFromProps({exercise}){
     //     return exercise || null
@@ -55,7 +54,7 @@ class Form extends Component {
                 description,
                 muscles
             } = this.state,
-            {classes, exercise, muscles: categories} = this.props;
+            {exercise, muscles: categories} = this.props;
 
         return (
             <form>
@@ -64,11 +63,11 @@ class Form extends Component {
                     value={title}
                     onChange={this.handleChange('title')}
                     margin="normal"
-                    className={classes.formControl}
+                    fullWidth
                 />
                 <br/>
                 <FormControl
-                    className={classes.formControl}
+                    fullWidth
                 >
                     <InputLabel
                         htmlFor="muscles">Muscles
@@ -88,7 +87,7 @@ class Form extends Component {
                 </FormControl>
                 <br/>
                 <TextField
-                    className={classes.formControl}
+                    fullWidth
                     label="Description"
                     multiline
                     rows="4"
@@ -101,6 +100,7 @@ class Form extends Component {
                     variant="outlined"
                     color="primary"
                     onClick={this.handleSubmit}
+                    disabled={!title || !muscles}
                 >
                     {exercise ? 'Edit' : 'Create '}
                 </Button>
@@ -110,4 +110,4 @@ class Form extends Component {
     }
 }
 
-export default withStyles(styles)(Form);
+export default Form;

@@ -4,6 +4,8 @@ import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
 import Exercises from './components/Exercises';
 import {muscles, exercises} from "./store";
+import {Provider} from "./context";
+
 
 class App extends Component {
     state = {
@@ -57,37 +59,37 @@ class App extends Component {
     handleExerciseEdit = exercise =>
         this.setState(prevState => ({
             exercises: [...prevState.exercises.filter(ex => ex.id !== exercise.id), exercise],
-            editMode: false
+            // editMode: false
         }));
-
+    getContext = () => ({
+        muscles,
+        ...this.state,
+        onCategorySelect: this.handleCategorySelect,
+        onCreate: this.handleExerciseCreate
+    });
 
     render() {
         const exercises = this.getExercisesByMuscles(),
             {category, exercise, editMode} = this.state;
         return (
-            <>
-                <CssBaseline />
-                <Header
-                    muscles={muscles}
-                    onExerciseCreate={this.handleExerciseCreate}
-                />
-                <Exercises
-                    exercise={exercise}
-                    category={category}
-                    exercises={exercises}
-                    editMode={editMode}
-                    muscles={muscles}
-                    onSelect={this.handleExerciseSelect}
-                    onDelete={this.handleExerciseDelete}
-                    onEditSelect={this.handleExerciseSelectEdit}
-                    onEdit={this.handleExerciseEdit}
-                />
-                <Footer
-                    category={category}
-                    muscles={muscles}
-                    onSelect={this.handleCategorySelect}
-                />
-            </>
+            <Provider value={this.getContext()}>
+                <>
+                    <CssBaseline/>
+                    <Header/>
+                    <Exercises
+                        exercise={exercise}
+                        category={category}
+                        exercises={exercises}
+                        editMode={editMode}
+                        muscles={muscles}
+                        onSelect={this.handleExerciseSelect}
+                        onDelete={this.handleExerciseDelete}
+                        onEditSelect={this.handleExerciseSelectEdit}
+                        onEdit={this.handleExerciseEdit}
+                    />
+                    <Footer/>
+                </>
+            </Provider>
         )
             ;
     }
